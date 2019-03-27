@@ -6,7 +6,6 @@ else
   gem 'puppet', :require => false
 end
 
-gem 'facter', '>= 2.2.0'
 gem 'rspec-puppet', '~> 2.0'
 gem 'puppet-lint'
 gem 'puppet-lint-absolute_classname-check'
@@ -21,6 +20,8 @@ gem 'puppet-lint-undef_in_function-check'
 gem 'puppet-lint-unquoted_string-check'
 gem 'puppet-lint-variable_contains_upcase'
 
+gem 'facter',             '~> 1.6'   if puppetversion <= '3.4.3'
+gem 'facter'                         if puppetversion > '3.4.3'
 gem 'rspec',              '~> 2.0'   if RUBY_VERSION >= '1.8.7' && RUBY_VERSION < '1.9'
 gem 'rake',               '~> 10.0'  if RUBY_VERSION >= '1.8.7' && RUBY_VERSION < '1.9'
 gem 'json',               '<= 1.8'   if RUBY_VERSION < '2.0.0'
