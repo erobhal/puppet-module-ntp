@@ -1,6 +1,6 @@
 {
   "name": "ghoneycutt-ntp",
-  "version": "4.1.1",
+  "version": "4.3.0",
   "author": "ghoneycutt",
   "summary": "Manage NTP",
   "license": "Apache-2.0",
@@ -10,12 +10,8 @@
   "description": "Manages NTP server",
   "requirements": [
     {
-      "name": "pe",
-      "version_requirement": ">= 3.2.0 < 5.0.0"
-    },
-    {
       "name": "puppet",
-      "version_requirement": ">= 3.0.0 < 5.0.0"
+      "version_requirement": ">= 3.0.0 < 7.0.0"
     }
   ],
   "operatingsystem_support": [
