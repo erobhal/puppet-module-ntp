@@ -111,6 +111,10 @@ keys <%= @keys_real %>
 # Accept any offset - useful for VM's or suspended systems
 tinker panic 0
 <% end -%>
+<% if @tinker_settings != 'UNSET' %>
+# Additional tinker settings <% @tinker_settings_real.each do |value| %>
+tinker <%= value %><% end %>
+<% end -%>
 <% if @disable_monitor_real == true -%>
 
 # Disabling monitor - https://isc.sans.edu/diary/NTP+reflection+attack/17300
