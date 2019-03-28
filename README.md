@@ -181,11 +181,25 @@ If statistics should be enabled.
 
 - *Default*: false
 
-enable_tinker
+enable_tinker *DEPRECATED*
 ----------------
 If tinker should be enabled (boolean).
+*DEPRECATED*. Use tinker_settings instead.
 
 - *Default*: true
+
+tinker_settings
+-----
+String or Array of tinker settings.
+
+<pre>
+ntp::tinker_settings:
+  - 'panic 0'
+  - 'step 0.1'
+</pre>
+
+- *Default*: 'UNSET'
+
 
 statdir
 -------
