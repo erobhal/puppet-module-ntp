@@ -1149,11 +1149,27 @@ describe 'ntp' do
       it { should contain_file('ntp_conf').with_content(/^tinker valid$/) }
     end
 
-    context 'to valid [ \'step 0\', \'stepout 1\', ]' do
+    context 'valid [ \'step 0\', \'stepout 1\', ]' do
       let(:params) { { :tinker_settings => [ 'step 0', 'stepout 1', ] } }
 
       it { should contain_file('ntp_conf').with_content(/^tinker step 0$/) }
       it { should contain_file('ntp_conf').with_content(/^tinker stepout 1$/) }
+    end
+
+    context "not specifying \"tinker panic\"" do
+      let(:params) { {
+        :tinker_settings => 'valid',
+        :enable_tinker   => true,
+      } }
+      it { should contain_file('ntp_conf').with_content(/^# Accept any offset/) }
+    end
+
+    context "specifying \"tinker panic\"" do
+      let(:params) { {
+        :tinker_settings => 'panic 1',
+        :enable_tinker   => true,
+      } }
+      it { should contain_file('ntp_conf').without_content(/^# Accept any offset/) }
     end
 
     [true,false,3,2.42,a = { 'ha' => 'sh' }].each do |value|

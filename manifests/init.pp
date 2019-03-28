@@ -107,9 +107,11 @@ class ntp (
       fail('ntp::tinker_settings must be a string or an array.')
     }
 
+    # If tinker panic is included in tinker_settings then enable_tinker
+    # should always be false
     $tinker_settings_joined = join($tinker_settings_real)
-    if $tinker_settings_joined =~ /tinker panic/ {
-      $enable_tinker = false
+    if $tinker_settings_joined =~ /panic/ {
+      $enable_tinker_real = false
     }
   }
 
@@ -353,12 +355,14 @@ class ntp (
   }
 
 
-  if is_bool($enable_tinker) == true {
-    $enable_tinker_real = $enable_tinker
-  } else {
-    $enable_tinker_real = $enable_tinker ? {
-      'USE_DEFAULTS' => $default_enable_tinker,
-      default        => str2bool($enable_tinker)
+  if ($enable_tinker_real == undef) {
+    if is_bool($enable_tinker) == true {
+      $enable_tinker_real = $enable_tinker
+    } else {
+      $enable_tinker_real = $enable_tinker ? {
+        'USE_DEFAULTS' => $default_enable_tinker,
+        default        => str2bool($enable_tinker)
+      }
     }
   }
 
