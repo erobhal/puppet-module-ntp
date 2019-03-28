@@ -94,6 +94,25 @@ class ntp (
     }
   }
 
+  if $tinker_settings != 'UNSET' {
+    if is_array($tinker_settings) == true {
+      $tinker_settings_real = $tinker_settings
+      validate_array($tinker_settings_real)
+    }
+    elsif is_string($tinker_settings) == true {
+      $tinker_settings_real = any2array($tinker_settings)
+      validate_array($tinker_settings_real)
+    }
+    else {
+      fail('ntp::tinker_settings must be a string or an array.')
+    }
+
+    $tinker_settings_joined = join($tinker_settings_real)
+    if $tinker_settings_joined =~ /tinker panic/ {
+      $enable_tinker = false
+    }
+  }
+
   # validate type and convert string to boolean if necessary
   if is_string($enable_stats) == true {
     $my_enable_stats = str2bool($enable_stats)
@@ -333,19 +352,6 @@ class ntp (
     validate_absolute_path($keys_real)
   }
 
-  if $tinker_settings != 'UNSET' {
-    if is_array($tinker_settings) == true {
-      $tinker_settings_real = $tinker_settings
-      validate_array($tinker_settings_real)
-    }
-    elsif is_string($tinker_settings) == true {
-      $tinker_settings_real = any2array($tinker_settings)
-      validate_array($tinker_settings_real)
-    }
-    else {
-      fail('ntp::tinker_settings must be a string or an array.')
-    }
-  }
 
   if is_bool($enable_tinker) == true {
     $enable_tinker_real = $enable_tinker
