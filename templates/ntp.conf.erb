@@ -2,6 +2,15 @@
 # DO NOT EDIT
 #
 # /etc/ntp.conf, configuration for ntpd; see ntp.conf(5) for help
+<% if @enable_tinker_real == true -%>
+
+# Accept any offset - useful for VM's or suspended systems
+tinker panic 0
+<% end -%>
+<% if @tinker_settings != 'UNSET' %>
+# Additional tinker settings <% @tinker_settings_real.each do |value| %>
+tinker <%= value %><% end %>
+<% end -%>
 <% if @driftfile_real != '' and @driftfile_real != nil -%>
 
 # Drift file.  Put this in a directory which the daemon can write to.
@@ -106,15 +115,6 @@ keys <%= @keys_real %>
 # Orphan mode
 # http://support.ntp.org/bin/view/Support/OrphanMode
 <% if @orphan_mode_stratum != 'UNSET' %>tos orphan <%= @orphan_mode_stratum %><% end %>
-<% if @enable_tinker_real == true -%>
-
-# Accept any offset - useful for VM's or suspended systems
-tinker panic 0
-<% end -%>
-<% if @tinker_settings != 'UNSET' %>
-# Additional tinker settings <% @tinker_settings_real.each do |value| %>
-tinker <%= value %><% end %>
-<% end -%>
 <% if @disable_monitor_real == true -%>
 
 # Disabling monitor - https://isc.sans.edu/diary/NTP+reflection+attack/17300
