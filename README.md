@@ -3,7 +3,7 @@
 
 Puppet module to manage NTP
 
-[![Build Status](https://api.travis-ci.org/ghoneycutt/puppet-module-ntp.png?branch=master)](https://travis-ci.org/ghoneycutt/puppet-module-ntp)
+[![Build Status](https://api.travis-ci.org/erobhal/puppet-module-ntp.png?branch=master)](https://travis-ci.org/erobhal/puppet-module-ntp)
 
 ===
 
