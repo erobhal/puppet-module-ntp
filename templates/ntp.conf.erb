@@ -2,14 +2,9 @@
 # DO NOT EDIT
 #
 # /etc/ntp.conf, configuration for ntpd; see ntp.conf(5) for help
-<% if @enable_tinker_real == true -%>
-
-# Accept any offset - useful for VM's or suspended systems
-tinker panic 0
-<% end -%>
-<% if @tinker_settings != 'UNSET' %>
-# Additional tinker settings <% @tinker_settings_real.each do |value| %>
-tinker <%= value %><% end %>
+<% if @tinker_settings_real != '' and @tinker_settings_real != nil %>
+# Additional tinker settings
+tinker<% @tinker_settings_real.each do |value| -%> <%= value %><% end -%>
 <% end -%>
 <% if @driftfile_real != '' and @driftfile_real != nil -%>
 

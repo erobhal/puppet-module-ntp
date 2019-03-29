@@ -96,12 +96,12 @@ class ntp (
 
   if $tinker_settings != 'UNSET' {
     if is_array($tinker_settings) == true {
-      $tinker_settings_real = $tinker_settings
-      validate_array($tinker_settings_real)
+      $tinker_settings_tmp = $tinker_settings
+      validate_array($tinker_settings_tmp)
     }
     elsif is_string($tinker_settings) == true {
-      $tinker_settings_real = any2array($tinker_settings)
-      validate_array($tinker_settings_real)
+      $tinker_settings_tmp = any2array($tinker_settings)
+      validate_array($tinker_settings_tmp)
     }
     else {
       fail('ntp::tinker_settings must be a string or an array.')
@@ -109,7 +109,7 @@ class ntp (
 
     # If tinker panic is included in tinker_settings then enable_tinker
     # should always be false
-    $tinker_settings_joined = join($tinker_settings_real)
+    $tinker_settings_joined = join($tinker_settings_tmp)
     if $tinker_settings_joined =~ /panic/ {
       $enable_tinker_real = false
     }
@@ -364,6 +364,16 @@ class ntp (
         default        => str2bool($enable_tinker)
       }
     }
+  }
+
+  if $enable_tinker_real == true {
+    if is_array($tinker_settings_tmp) {
+      $tinker_settings_real = concat($tinker_settings_tmp, 'panic 0')
+    } else {
+      $tinker_settings_real = any2array('panic 0')
+    }
+  } else {
+    $tinker_settings_real = any2array($tinker_settings_tmp)
   }
 
   validate_absolute_path($statsdir)
