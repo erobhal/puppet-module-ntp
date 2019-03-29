@@ -111,8 +111,12 @@ class ntp (
     # should always be false
     $tinker_settings_joined = join($tinker_settings_tmp)
     if $tinker_settings_joined =~ /panic/ {
-      $enable_tinker_real = false
+      $tinker_panic_included = true
+    } else {
+      $tinker_panic_included = false
     }
+  } else {
+    $tinker_panic_included = false
   }
 
   # validate type and convert string to boolean if necessary
@@ -355,7 +359,7 @@ class ntp (
   }
 
 
-  if ($enable_tinker_real == '') or ($enable_tinker_real == undef) {
+  if ($tinker_panic_included == false) {
     if is_bool($enable_tinker) == true {
       $enable_tinker_real = $enable_tinker
     } else {
@@ -364,6 +368,8 @@ class ntp (
         default        => str2bool($enable_tinker)
       }
     }
+  } else {
+    $enable_tinker_real = false
   }
 
   if $enable_tinker_real == true {
