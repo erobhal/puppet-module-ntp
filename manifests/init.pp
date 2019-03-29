@@ -363,6 +363,7 @@ class ntp (
   if ($tinker_panic_included == false) {
     if is_bool($enable_tinker) == true {
       $enable_tinker_real = $enable_tinker
+      notify {'ntp: enable_tinker is deprecated. Use tinker_settings instead.':}
     } else {
       $enable_tinker_real = $enable_tinker ? {
         'USE_DEFAULTS' => $default_enable_tinker,
