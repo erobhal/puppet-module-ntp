@@ -34,6 +34,7 @@ class ntp (
   $fudge_stratum       = '10',
   $enable_stats        = false,
   $enable_tinker       = 'USE_DEFAULTS',
+  $tinker_settings     = 'UNSET',
   $statsdir            = '/var/log/ntpstats/',
   $logfile             = 'UNSET',
   $ignore_local_clock  = false,
@@ -74,6 +75,7 @@ class ntp (
     $my_service_hasrestart = $service_hasrestart
   }
 
+
   if $peers != 'UNSET' {
     if is_array($peers) == true {
       $my_peers = $peers
@@ -90,6 +92,32 @@ class ntp (
     else {
       fail('ntp::peers must be a string or an array or an hash.')
     }
+  }
+
+  if $tinker_settings != 'UNSET' {
+    if is_array($tinker_settings) == true {
+      $tinker_settings_tmp = $tinker_settings
+      validate_array($tinker_settings_tmp)
+    }
+    elsif is_string($tinker_settings) == true {
+      $tinker_settings_tmp = any2array($tinker_settings)
+      validate_array($tinker_settings_tmp)
+    }
+    else {
+      fail('ntp::tinker_settings must be a string or an array.')
+    }
+
+    # If tinker panic is included in tinker_settings then enable_tinker
+    # should always be false
+    $tinker_settings_joined = join($tinker_settings_tmp)
+    if $tinker_settings_joined =~ /panic/ {
+      $tinker_panic_included = true
+    } else {
+      $tinker_panic_included = false
+    }
+  } else {
+    $tinker_panic_included = false
+    $tinker_settings_tmp = undef
   }
 
   # validate type and convert string to boolean if necessary
@@ -331,12 +359,31 @@ class ntp (
     validate_absolute_path($keys_real)
   }
 
-  if is_bool($enable_tinker) == true {
-    $enable_tinker_real = $enable_tinker
+
+  if ($tinker_panic_included == false) {
+    if is_bool($enable_tinker) == true {
+      $enable_tinker_real = $enable_tinker
+    } else {
+      $enable_tinker_real = $enable_tinker ? {
+        'USE_DEFAULTS' => $default_enable_tinker,
+        default        => str2bool($enable_tinker)
+      }
+    }
   } else {
-    $enable_tinker_real = $enable_tinker ? {
-      'USE_DEFAULTS' => $default_enable_tinker,
-      default        => str2bool($enable_tinker)
+    $enable_tinker_real = false
+  }
+
+  if $enable_tinker_real == true {
+    if is_array($tinker_settings_tmp) {
+      $tinker_settings_real = concat($tinker_settings_tmp, 'panic 0')
+    } else {
+      $tinker_settings_real = any2array('panic 0')
+    }
+  } else {
+    if ($tinker_settings_tmp != undef) {
+      $tinker_settings_real = any2array($tinker_settings_tmp)
+    } else {
+      $tinker_settings_real = undef
     }
   }
 

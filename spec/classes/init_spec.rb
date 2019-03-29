@@ -1133,6 +1133,58 @@ describe 'ntp' do
     end
   end
 
+  describe 'with tinker_settings set to' do
+    let :facts do
+      {
+        :osfamily               => 'RedHat',
+        :kernel                 => 'Linux',
+        :operatingsystem        => 'RedHat',
+        :operatingsystemrelease => '6.0',
+        :virtual                => 'physical',
+      }
+    end
+
+    context "valid \"valid\" as string" do
+      let(:params) { { :tinker_settings => 'valid' } }
+      it { should contain_file('ntp_conf').with_content(/^tinker valid/) }
+    end
+
+    context 'valid [ \'step 0\', \'stepout 1\', ]' do
+      let(:params) { { :tinker_settings => [ 'step 0', 'stepout 1', ] } }
+
+      it { should contain_file('ntp_conf').with_content(/^tinker step 0 stepout 1/) }
+    end
+
+    context "not specifying \"tinker panic\"" do
+      let(:params) { {
+        :tinker_settings => 'valid',
+        :enable_tinker   => true,
+      } }
+      it { should contain_file('ntp_conf').with_content(/^tinker valid panic 0$/) }
+    end
+
+    context "specifying \"tinker panic\"" do
+      let(:params) { {
+        :tinker_settings => 'panic 1',
+        :enable_tinker   => true,
+      } }
+      it { should contain_file('ntp_conf').with_content(/^tinker panic 1$/) }
+      it { should contain_file('ntp_conf').without_content(/panic 0/) }
+    end
+
+    [true,false,3,2.42,a = { 'ha' => 'sh' }].each do |value|
+      context "invalid #{value} as #{value.class}" do
+        let(:params) { { :tinker_settings => value } }
+
+        it do
+          expect {
+            should contain_class('ntp')
+          }.to raise_error(Puppet::Error,/tinker_settings must be a string or an array/)
+        end
+      end
+    end
+  end
+
   platforms = {
     'debian6' =>
       { :kernel                 => 'Linux',
