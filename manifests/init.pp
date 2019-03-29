@@ -355,7 +355,7 @@ class ntp (
   }
 
 
-  if ($enable_tinker_real == undef) {
+  if ($enable_tinker_real == '') or ($enable_tinker_real == undef) {
     if is_bool($enable_tinker) == true {
       $enable_tinker_real = $enable_tinker
     } else {
