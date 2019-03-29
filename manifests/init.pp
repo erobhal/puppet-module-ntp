@@ -117,6 +117,7 @@ class ntp (
     }
   } else {
     $tinker_panic_included = false
+    $tinker_settings_tmp = undef
   }
 
   # validate type and convert string to boolean if necessary
