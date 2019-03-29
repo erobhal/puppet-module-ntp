@@ -1,12 +1,12 @@
 {
-  "name": "ghoneycutt-ntp",
-  "version": "4.3.0",
-  "author": "ghoneycutt",
+  "name": "erobhal-ntp",
+  "version": "4.4.0",
+  "author": "erobhal",
   "summary": "Manage NTP",
   "license": "Apache-2.0",
-  "source": "git://github.com/ghoneycutt/puppet-module-ntp.git",
-  "project_page": "https://github.com/ghoneycutt/puppet-module-ntp",
-  "issues_url": "https://github.com/ghoneycutt/puppet-module-ntp/issues",
+  "source": "git://github.com/erobhal/puppet-module-ntp.git",
+  "project_page": "https://github.com/erobhal/puppet-module-ntp",
+  "issues_url": "https://github.com/erobhal/puppet-module-ntp/issues",
   "description": "Manages NTP server",
   "requirements": [
     {
