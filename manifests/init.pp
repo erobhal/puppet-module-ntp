@@ -380,7 +380,11 @@ class ntp (
       $tinker_settings_real = any2array('panic 0')
     }
   } else {
-    $tinker_settings_real = any2array($tinker_settings_tmp)
+    if ($tinker_settings_tmp != undef) {
+      $tinker_settings_real = any2array($tinker_settings_tmp)
+    } else {
+      $tinker_settings_real = undef
+    }
   }
 
   validate_absolute_path($statsdir)

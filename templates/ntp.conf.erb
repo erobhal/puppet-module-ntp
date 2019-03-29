@@ -3,8 +3,9 @@
 #
 # /etc/ntp.conf, configuration for ntpd; see ntp.conf(5) for help
 <% if @tinker_settings_real != '' and @tinker_settings_real != nil %>
-# Additional tinker settings
+# Tinker settings
 tinker<% @tinker_settings_real.each do |value| -%> <%= value %><% end -%>
+
 <% end -%>
 <% if @driftfile_real != '' and @driftfile_real != nil -%>
 
